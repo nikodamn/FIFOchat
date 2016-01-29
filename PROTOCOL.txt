@@ -1,0 +1,23 @@
+Zarowno serwer, jak i klient korzystaja z pliku config.c, ktory odpowiada za podpiete biblioteki oraz zadeklarowanie struktur. Oprocz struktury msgbuf opisanej w specyfikacji utworzono strukture 'users' zawierajaca tablice 'nick' typu char oraz wartosc pid uzytkownika. Ponadto zadeklarowano strukture 'group', ktora zawiera tablice 'group_name' typu char oraz 'users_pid' typu int.
+
+I. KLIENT
+
+Klient w swojej funkci main() wykonuje nastepujace kroki:
+1. Pobiera identyfikator kolejki o zadanym ID
+2. Tworzy instancje struktury msgbuf jako wiadomosc i tablice 20 wiadomosci
+3. Zeruje tablice wiadomosci (text, nick, date)
+4. W glownej petli while, ktora odpowiada za dzialanie aplikacji wczytuje numer zadania podany przez uzytkownika
+5. Na tej podstawie wywolywana jest albo pomocniczna albo od razu przypisywana wartosc do struktury wiadomosci
+6. Wywolywana jest funkcja InitTasks, ktora odpowiada za ustawienie pidu oraz wartosc cmd. To umozliwia dzialanie komunikatow w pozniejszej funkcjach pomocniczych.
+7. Wysylana jest informacja do kolejki
+8. Pobierana jest wiadomosc z kolejki
+9. Wywolywana jest funkcja CheckStatus oraz CheckCMD do obslugi komunikatow
+
+II. SERWER
+
+Serwer w swojej glownej funkcji main() wykonuje nastepujace kroki:
+1. Tworzy instancje struktur message, groups oraz user.
+2. Zeruje (korzystajac z funkcji Clear) zmienne tych struktur
+3. Wczytuje grupy z pliku poprzez funkcje LoadGroupsNames
+4. Zawiera funkcje while, ktora odpowiada za dzialanie aplikacji
+5. Zaleznie od wartosci cmd przeslanej w strukturze message wywoluje konkretna funkcje. Wysylanie wiadomosci do clienta zostalo zrealizowane w ciele odpowiednich funkcji.
